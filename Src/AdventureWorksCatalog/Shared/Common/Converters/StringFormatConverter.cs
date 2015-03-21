@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
 
-namespace AdventureWorksCatalog.Common
+namespace AdventureWorksCatalog.Common.Converters
 {
     public class StringFormatConverter : IValueConverter
     {

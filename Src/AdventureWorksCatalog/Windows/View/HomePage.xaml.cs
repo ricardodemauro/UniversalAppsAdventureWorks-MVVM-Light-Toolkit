@@ -50,5 +50,10 @@ namespace AdventureWorksCatalog.View
         {
 
         }
+
+        private void Grid_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+
+        }
     }
 }

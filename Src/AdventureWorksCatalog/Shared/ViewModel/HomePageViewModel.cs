@@ -9,6 +9,7 @@ using AdventureWorksCatalog.DataSources;
 using GalaSoft.MvvmLight.Views;
 using AdventureWorksCatalog.Interfaces.DataSources;
 using GalaSoft.MvvmLight.Command;
+using Windows.Foundation;
 
 namespace AdventureWorksCatalog.ViewModel
 {
@@ -32,6 +33,34 @@ namespace AdventureWorksCatalog.ViewModel
         {
             get { return _Categories; }
             set { Set(ref this._Categories, value); }
+        }
+
+        private string _lastPosition = "Click somewhere";
+        public string LastPosition
+        {
+            get
+            {
+                return _lastPosition;
+            }
+            set
+            {
+                Set(ref _lastPosition, value);
+            }
+        }
+
+        private RelayCommand<Point> _showPositionCommand;
+
+        public RelayCommand<Point> Tap
+        {
+            get
+            {
+                return _showPositionCommand
+                        ?? (_showPositionCommand = new RelayCommand<Point>(
+                            point =>
+                            {
+                                LastPosition = string.Format("{0:N1}, {1:N1}", point.X, point.Y);
+                            }));
+            }
         }
 
         public HomePageViewModel(IWindowsDataSource service, INavigationService navigationService)

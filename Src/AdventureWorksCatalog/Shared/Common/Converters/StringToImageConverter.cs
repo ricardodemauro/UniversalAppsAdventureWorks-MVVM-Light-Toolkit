@@ -2,7 +2,7 @@
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace AdventureWorksCatalog.Common
+namespace AdventureWorksCatalog.Common.Converters
 {
     public class StringToImageConverter : IValueConverter
     {

@@ -6,9 +6,11 @@
     xmlns:local="using:AdventureWorksCatalog.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:common="using:AdventureWorksCatalog.Common"
     mc:Ignorable="d"
-    DataContext="{Binding HomePage, Source={StaticResource Locator}}">
+    DataContext="{Binding Home, Source={StaticResource Locator}}">
 
     <Page.Resources>
         <CollectionViewSource x:Name="groupedProductsViewSource"
@@ -18,7 +20,13 @@
 
         <DataTemplate x:Key="CategoriesDataTemplate">
             <Grid HorizontalAlignment="Left" Width="400" Height="250" IsTapEnabled="True">
-                <Border Background="#003D3D3D" Tapped="CategoryBorder_Tapped">
+                <i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="PointerPressed">
+                        <core:InvokeCommandAction Command="{Binding DataContext.Tap, Mode=OneWay}"/>
+                    </core:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+
+                <Border Background="#003D3D3D">
                     <Image Source="{Binding PhotoPath, Converter={StaticResource StringToImageConverter}}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Name}"/>
                 </Border>
                 <StackPanel VerticalAlignment="Bottom" Background="#EA1E2324" Height="55">
@@ -29,8 +37,59 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
+        
+        <ControlTemplate x:Key="CategoriesListViewControlTemplate" TargetType="ListView">
+        	<StackPanel HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100">
+        		<TextBlock TextWrapping="Wrap" Text="{Binding Name}"/>
+        	</StackPanel>
+        </ControlTemplate>
+        <Style x:Key="ProductGridViewStyle" TargetType="GridView">
+        	<Setter Property="Padding" Value="0,0,0,10"/>
+        	<Setter Property="IsTabStop" Value="False"/>
+        	<Setter Property="TabNavigation" Value="Once"/>
+        	<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        	<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+        	<Setter Property="ScrollViewer.HorizontalScrollMode" Value="Enabled"/>
+        	<Setter Property="ScrollViewer.IsHorizontalRailEnabled" Value="False"/>
+        	<Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled"/>
+        	<Setter Property="ScrollViewer.IsVerticalRailEnabled" Value="False"/>
+        	<Setter Property="ScrollViewer.ZoomMode" Value="Disabled"/>
+        	<Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False"/>
+        	<Setter Property="ScrollViewer.BringIntoViewOnFocusChange" Value="True"/>
+        	<Setter Property="IsSwipeEnabled" Value="True"/>
+        	<Setter Property="ItemContainerTransitions">
+        		<Setter.Value>
+        			<TransitionCollection>
+        				<AddDeleteThemeTransition/>
+        				<ContentThemeTransition/>
+        				<ReorderThemeTransition/>
+        				<EntranceThemeTransition IsStaggeringEnabled="False"/>
+        			</TransitionCollection>
+        		</Setter.Value>
+        	</Setter>
+        	<Setter Property="ItemsPanel">
+        		<Setter.Value>
+        			<ItemsPanelTemplate>
+        				<ItemsWrapGrid Orientation="Vertical"/>
+        			</ItemsPanelTemplate>
+        		</Setter.Value>
+        	</Setter>
+        </Style>
+        <DataTemplate x:Key="ProductsDataTemplate">
+        	<Grid RenderTransformOrigin="0.5,0.5" Height="239.982" UseLayoutRounding="False" Width="341.31" d:LayoutRounding="Auto">
+        		<i:Interaction.Behaviors>
+        			<core:EventTriggerBehavior EventName="Tapped">
+        				<core:InvokeCommandAction Command="{Binding Home.NavigateToCategoryCommand, Mode=OneWay, Source={StaticResource Locator}}"/>
+        			</core:EventTriggerBehavior>
+        		</i:Interaction.Behaviors>
+        		<Grid.RenderTransform>
+        			<CompositeTransform Rotation="-0.707"/>
+        		</Grid.RenderTransform>
+        	</Grid>
+        </DataTemplate>
     </Page.Resources>
-    <Grid>
+
+    <Grid x:Name="LayoutRoot">
         <Grid.Background>
             <ImageBrush ImageSource="{Binding Company.BackgroundPath, Converter={StaticResource StringToImageConverter}}" Stretch="UniformToFill" />
         </Grid.Background>
@@ -71,21 +130,27 @@
                     </Grid>
                 </DataTemplate>
             </HubSection>
-            <HubSection Padding="80,30,0,44">
+            <HubSection x:Name="hubSection" Padding="80,30,0,44">
                 <DataTemplate>
-                    <GridView 
-                        ItemsSource="{Binding Source={StaticResource groupedProductsViewSource}}"
-                        SelectionMode="None"
+                    <GridView
+                        SelectionMode="Multiple"
                         IsSwipeEnabled="false"
-                        ItemsPanel="{StaticResource CategoriesPanelTemplate}"
-                        ItemTemplate="{StaticResource CategoriesDataTemplate}">
-                        
+                        IsItemClickEnabled="True" Style="{StaticResource ProductGridViewStyle}" ItemTemplate="{StaticResource ProductsDataTemplate}">
+                    	<i:Interaction.Behaviors>
+                    		<core:EventTriggerBehavior EventName="SelectionChanged">
+                    			<core:InvokeCommandAction Command="{Binding NavigateToCategoryCommand, Mode=OneWay}"/>
+                    		</core:EventTriggerBehavior>
+                    	</i:Interaction.Behaviors>
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Orientation="Horizontal" Margin="0,0,40,0"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
                         <GridView.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.HeaderTemplate>
                                     <DataTemplate>
-                                        <Button 
-                                                Command="{Binding DataContext.NavigateToCategoryCommand, ElementName=Home}"
+                                        <Button Command="{Binding DataContext.NavigateToCategoryCommand, ElementName=Home}"
                                                 CommandParameter="{Binding Id}"
                                                 FontWeight="{ThemeResource HubSectionHeaderThemeFontWeight}" 
                                                 FontSize="{ThemeResource HubSectionHeaderThemeFontSize}" 
