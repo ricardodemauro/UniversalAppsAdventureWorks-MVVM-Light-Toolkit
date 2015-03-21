@@ -90,7 +90,7 @@ namespace AdventureWorksCatalog.DataSources
             return result;
         }
 
-        public async Task LoadAsync()
+        protected async Task LoadAsync()
         {
             if (_Categories == null)
             {

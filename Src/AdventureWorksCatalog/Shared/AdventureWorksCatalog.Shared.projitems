@@ -19,11 +19,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\StringToImageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSources\DataSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSources\DataSourceWindows.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Design\DesignDataSourceWindows.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locator\ViewModelLocator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\CategoryPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Commands\DelegateCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\HomePageViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Messages\MessageHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Messages\NavigateServiceHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Messages\NavigateMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ProductPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\SearchPageViewModel.cs" />

@@ -5,11 +5,14 @@ using AdventureWorksCatalog.ViewModel.Commands;
 using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using AdventureWorksCatalog.DataSources;
+using AdventureWorksCatalog.Interfaces.DataSources;
 
 namespace AdventureWorksCatalog.ViewModel
 {
     public class CategoryPageViewModel : ViewModelBase
     {
+        private readonly IWindowsDataSource _service;
+
         public ICommand NavigateHomeCommand { get; private set; }
         public ICommand NavigateToProductCommand { get; private set; }
 
@@ -27,8 +30,10 @@ namespace AdventureWorksCatalog.ViewModel
             set { Set(ref this._Category, value); }
         }
 
-        public CategoryPageViewModel()
+        public CategoryPageViewModel(IWindowsDataSource service)
         {
+            _service = service;
+
             NavigateHomeCommand = new DelegateCommand(OnNavigateHomeCommand);
             NavigateToProductCommand = new DelegateCommand(OnNavigateToProductCommand);
         }
@@ -47,8 +52,8 @@ namespace AdventureWorksCatalog.ViewModel
 
         public async Task LoadAsync(int categoryId)
         {
-            Category = await DataSource.Instance.GetCategoryAsync(categoryId);
-            Company = await DataSource.Instance.GetCompanyAsync();
+            Category = await _service.GetCategoryAsync(categoryId);
+            Company = await _service.GetCompanyAsync();
         }
     }
 }

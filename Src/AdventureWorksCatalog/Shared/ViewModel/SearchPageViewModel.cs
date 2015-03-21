@@ -45,17 +45,17 @@ namespace AdventureWorksCatalog.ViewModel
 
         private void OnNavigateHomeCommand(object parameter)
         {
-            PublishMessage(new NavigateMessage("HomePage", parameter));
+            //PublishMessage(new NavigateMessage("HomePage", parameter));
         }
 
         private void OnNavigateToProductCommand(object parameter)
         {
-            PublishMessage(new NavigateMessage("ProductPage", parameter));
+            //PublishMessage(new NavigateMessage("ProductPage", parameter));
         }
 
         private void OnNavigateToCategoryCommand(object parameter)
         {
-            PublishMessage(new NavigateMessage("CategoryPage", parameter));
+            //PublishMessage(new NavigateMessage("CategoryPage", parameter));
         }
 
         public async Task LoadAsync(string query)

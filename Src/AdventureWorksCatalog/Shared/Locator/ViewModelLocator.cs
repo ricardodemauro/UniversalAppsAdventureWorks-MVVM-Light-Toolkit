@@ -16,6 +16,7 @@ using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
 
 namespace AdventureWorksCatalog.Locator
@@ -42,6 +43,8 @@ namespace AdventureWorksCatalog.Locator
                 SimpleIoc.Default.Register<IWindowsDataSource, DataSourceWindows>();
             }
 
+            SimpleIoc.Default.Register<INavigationService, NavigateServiceHandler>();
+
             SimpleIoc.Default.Register<HomePageViewModel>();
             SimpleIoc.Default.Register<CategoryPageViewModel>();
             SimpleIoc.Default.Register<SearchPageViewModel>();
@@ -51,7 +54,7 @@ namespace AdventureWorksCatalog.Locator
         }
 
         /// <summary>
-        /// Gets the Main property.
+        /// Gets the HomePage property.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
             "CA1822:MarkMembersAsStatic",

@@ -6,13 +6,19 @@ using AdventureWorksCatalog.ViewModel.Commands;
 using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using AdventureWorksCatalog.DataSources;
+using GalaSoft.MvvmLight.Views;
+using AdventureWorksCatalog.Interfaces.DataSources;
+using GalaSoft.MvvmLight.Command;
 
 namespace AdventureWorksCatalog.ViewModel
 {
     public class HomePageViewModel : ViewModelBase
     {
+        private readonly INavigationService _navigationService;
+        private readonly IWindowsDataSource _service;
+
         public ICommand NavigateToCategoryCommand { get; private set; }
-        public ICommand NavigateToProductCommand { get; private set; }
+        public RelayCommand<Product> NavigateToProductCommand { get; private set; }
 
         private Company _Company;
         public Company Company
@@ -28,33 +34,36 @@ namespace AdventureWorksCatalog.ViewModel
             set { Set(ref this._Categories, value); }
         }
 
-        public HomePageViewModel()
+        public HomePageViewModel(IWindowsDataSource service, INavigationService navigationService)
         {
+            _service = service;
+            _navigationService = navigationService;
+
             NavigateToCategoryCommand = new DelegateCommand(OnNavigateToCategoryCommand);
-            NavigateToProductCommand = new DelegateCommand(OnNavigateToProductCommand);
+            NavigateToProductCommand = new RelayCommand<Product>(OnNavigateToProductCommand);
+
+            this.LoadAsync();
         }
 
-        private void OnNavigateToProductCommand(object parameter)
+        private void OnNavigateToProductCommand(Product parameter)
         {
-            MessengerInstance.Send<NavigateMessage>(new NavigateMessage("ProductPage", parameter));
-            //PublishMessage(new NavigateMessage("ProductPage", parameter));
+            _navigationService.NavigateTo("ProductPage", parameter);
         }
 
         private void OnNavigateToCategoryCommand(object parameter)
         {
-            MessengerInstance.Send<NavigateMessage>(new NavigateMessage("CategoryPage", parameter));
-            //PublishMessage(new NavigateMessage("CategoryPage", parameter));
+            _navigationService.NavigateTo("CategoryPage", parameter);
         }
 
         public async Task LoadAsync()
         {
-            var categories = await DataSource.Instance.GetCategoriesAndItemsAsync(4);
+            var categories = await _service.GetCategoriesAndItemsAsync(4);
             Categories = new ObservableCollection<Category>();
             foreach (var category in categories)
             {
                 Categories.Add(category);
             }
-            Company = await DataSource.Instance.GetCompanyAsync();
+            Company = await _service.GetCompanyAsync();
         }
     }
 }

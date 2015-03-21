@@ -13,8 +13,6 @@ namespace AdventureWorksCatalog.Interfaces.DataSources
 
         Task<List<Category>> SearchCategoriesAndItemsAsync(string query);
 
-        Task LoadAsync();
-
         Task<Company> GetCompanyAsync();
 
         Task<Product> GetProductAsync(int productId);
