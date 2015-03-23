@@ -37,13 +37,11 @@ namespace AdventureWorksCatalog.ViewModel
         private void OnNavigateToProductCommand(object parameter)
         {
             MessengerInstance.Send<NavigateMessage>(new NavigateMessage("ProductPage", parameter));
-            //PublishMessage(new NavigateMessage("ProductPage", parameter));
         }
 
         private void OnNavigateToCategoryCommand(object parameter)
         {
             MessengerInstance.Send<NavigateMessage>(new NavigateMessage("CategoryPage", parameter));
-            //PublishMessage(new NavigateMessage("CategoryPage", parameter));
         }
 
         public async Task LoadAsync()
