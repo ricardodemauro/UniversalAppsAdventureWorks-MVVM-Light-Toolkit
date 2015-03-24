@@ -108,7 +108,8 @@
 						ItemsSource="{Binding Source={StaticResource groupedProductsViewSource}}"
 						SelectionMode="None"
 						IsSwipeEnabled="false"
-						IsItemClickEnabled="True" Style="{StaticResource GridViewStyleProduto}">
+						IsItemClickEnabled="True" 
+                        Style="{StaticResource GridViewStyleProduto}">
 						<GridView.ItemTemplate>
 							<DataTemplate>
 								<Grid HorizontalAlignment="Left" Width="400" Height="250">
@@ -135,7 +136,7 @@
 									<DataTemplate>
 										<Button 
 											Command="{Binding DataContext.NavigateToCategoryCommand, ElementName=Home}"
-											CommandParameter="{Binding Id}"
+											CommandParameter="{Binding }"
 											FontWeight="{ThemeResource HubSectionHeaderThemeFontWeight}" 
 											FontSize="{ThemeResource HubSectionHeaderThemeFontSize}" 
 											Margin="0,0,0,20" 

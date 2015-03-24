@@ -7,6 +7,7 @@ using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using AdventureWorksCatalog.DataSources;
 using AdventureWorksCatalog.Interfaces.DataSources;
+using GalaSoft.MvvmLight.Command;
 
 namespace AdventureWorksCatalog.ViewModel
 {
@@ -33,19 +34,19 @@ namespace AdventureWorksCatalog.ViewModel
 
         public HomePageViewModel(IWindowsDataSource datasource)
         {
-            NavigateToCategoryCommand = new DelegateCommand(OnNavigateToCategoryCommand);
-            NavigateToProductCommand = new DelegateCommand(OnNavigateToProductCommand);
+            NavigateToCategoryCommand = new RelayCommand<Category>(OnNavigateToCategoryCommand);
+            NavigateToProductCommand = new RelayCommand<Product>(OnNavigateToProductCommand);
             DataSource = datasource;
 
             this.LoadAsync();
         }
 
-        private void OnNavigateToProductCommand(object parameter)
+        private void OnNavigateToProductCommand(Product parameter)
         {
             MessengerInstance.Send<NavigateMessage>(new NavigateMessage("ProductPage", parameter));
         }
 
-        private void OnNavigateToCategoryCommand(object parameter)
+        private void OnNavigateToCategoryCommand(Category parameter)
         {
             MessengerInstance.Send<NavigateMessage>(new NavigateMessage("CategoryPage", parameter));
         }
