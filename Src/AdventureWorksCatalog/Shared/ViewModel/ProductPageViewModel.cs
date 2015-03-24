@@ -47,6 +47,13 @@ namespace AdventureWorksCatalog.ViewModel
             this.DataSource = datasource;
 
             NavigateHomeCommand = new RelayCommand(OnNavigateHomeCommand);
+
+#if DEBUG
+            if(IsInDesignMode)
+            {
+                this.LoadAsync(1);
+            }
+#endif
         }
 
         private void OnNavigateHomeCommand()

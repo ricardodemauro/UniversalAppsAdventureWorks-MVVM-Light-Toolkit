@@ -15,7 +15,9 @@ namespace AdventureWorksCatalog.ViewModel
 {
     public class HomePageViewModel : AWViewModelBase
     {
+#if !WINDOWS_PHONE_APP
         public ICommand NavigateToCategoryCommand { get; private set; }
+#endif
         public ICommand NavigateToProductCommand { get; private set; }
         public ICommand RefreshCommand { get; private set; }
         public IWindowsDataSource DataSource { get; private set; }
@@ -51,7 +53,9 @@ namespace AdventureWorksCatalog.ViewModel
         public HomePageViewModel(IWindowsDataSource datasource, INavigationService navigationService)
             : base(navigationService)
         {
+#if !WINDOWS_PHONE_APP
             this.NavigateToCategoryCommand = new RelayCommand<Category>(OnNavigateToCategoryCommand);
+#endif
             this.NavigateToProductCommand = new RelayCommand<Product>(OnNavigateToProductCommand);
 
             this.RefreshCommand = new RelayCommand(() => RefreshAsync(), () => !this.Loading);
@@ -66,11 +70,12 @@ namespace AdventureWorksCatalog.ViewModel
             this.NavigationService.NavigateTo(PagesName.ProductPageName, parameter);
         }
 
+#if !WINDOWS_PHONE_APP
         private void OnNavigateToCategoryCommand(Category parameter)
         {
             this.NavigationService.NavigateTo(PagesName.CategoryPageName, parameter);
         }
-
+#endif
         public async Task RefreshAsync()
         {
             this.Loading = true;
