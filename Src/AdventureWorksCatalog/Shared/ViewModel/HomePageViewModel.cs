@@ -21,8 +21,20 @@ namespace AdventureWorksCatalog.ViewModel
         public ICommand NavigateToProductCommand { get; private set; }
         public ICommand RefreshCommand { get; private set; }
         public IWindowsDataSource DataSource { get; private set; }
-
         private bool _loading;
+        private Product selectedProductFlyout;
+
+        public Product SelectedProdutoFlyout
+        {
+            get
+            {
+                return selectedProductFlyout;
+            }
+            set
+            {
+                Set(ref selectedProductFlyout, value);
+            }
+        }
 
         public bool Loading
         {
