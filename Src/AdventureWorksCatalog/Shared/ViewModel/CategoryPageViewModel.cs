@@ -11,12 +11,11 @@ using GalaSoft.MvvmLight.Views;
 
 namespace AdventureWorksCatalog.ViewModel
 {
-    public class CategoryPageViewModel : ViewModelBase, IViewModel
+    public class CategoryPageViewModel : AWViewModelBase
     {
         public ICommand NavigateHomeCommand { get; private set; }
         public ICommand NavigateToProductCommand { get; private set; }
         public IWindowsDataSource DataSource { get; private set; }
-        public INavigationService NavigationService { get; private set; }
 
         private Company _Company;
         public Company Company
@@ -33,9 +32,9 @@ namespace AdventureWorksCatalog.ViewModel
         }
 
         public CategoryPageViewModel(IWindowsDataSource datasource, INavigationService navigationService)
+            : base(navigationService)
         {
             this.DataSource = datasource;
-            this.NavigationService = navigationService;
 
             NavigateHomeCommand = new RelayCommand(OnNavigateHomeCommand);
             NavigateToProductCommand = new RelayCommand<Product>(OnNavigateToProductCommand);
@@ -57,7 +56,7 @@ namespace AdventureWorksCatalog.ViewModel
             Company = await this.DataSource.GetCompanyAsync();
         }
 
-        public void Initialize(object parameter)
+        public override void Initialize(object parameter)
         {
             Category category = parameter as Category;
             if (category == null)
@@ -65,6 +64,8 @@ namespace AdventureWorksCatalog.ViewModel
                 throw new ArgumentNullException("parameter", "parameter cannot be null");
             }
             this.LoadAsync(category.Id);
+
+            base.Initialize(parameter);
         }
     }
 }

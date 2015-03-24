@@ -23,9 +23,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)DataSources\DataSourceWindows.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locator\ViewModelLocator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\AWNavigationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\AWViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\CategoryPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\HomePageViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\IViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Messages\MessageHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Messages\NavigateMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ProductPageViewModel.cs" />

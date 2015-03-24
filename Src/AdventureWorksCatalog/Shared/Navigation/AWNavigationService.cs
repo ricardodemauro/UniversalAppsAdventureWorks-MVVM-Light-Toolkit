@@ -24,7 +24,7 @@ namespace AdventureWorksCatalog.Navigation
             if (view == null)
                 return;
 
-            var viewModel = view.DataContext as IViewModel;
+            var viewModel = view.DataContext as AWViewModelBase;
             if (viewModel != null)
             {
                 if (!(e.NavigationMode == Windows.UI.Xaml.Navigation.NavigationMode.Back &&

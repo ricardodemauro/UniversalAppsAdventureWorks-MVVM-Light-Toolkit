@@ -11,7 +11,7 @@ using AdventureWorksCatalog.Extensions;
 
 namespace AdventureWorksCatalog.ViewModel
 {
-    public class SearchPageViewModel : ViewModelBase
+    public class SearchPageViewModel : AWViewModelBase
     {
         public ICommand NavigateToCategoryCommand { get; private set; }
         public ICommand NavigateHomeCommand { get; private set; }
@@ -41,9 +41,9 @@ namespace AdventureWorksCatalog.ViewModel
         }
 
         public SearchPageViewModel(IWindowsDataSource datasource, INavigationService navigationService)
+            : base(navigationService)
         {
             this.DataSource = datasource;
-            this.NavigationService = navigationService;
 
             NavigateHomeCommand = new RelayCommand(OnNavigateHomeCommand);
             NavigateToCategoryCommand = new RelayCommand<Category>(OnNavigateToCategoryCommand);

@@ -13,12 +13,11 @@ using System.Xml;
 
 namespace AdventureWorksCatalog.ViewModel
 {
-    public class ProductPageViewModel : ViewModelBase, IViewModel
+    public class ProductPageViewModel : AWViewModelBase
     {
         public ICommand NavigateHomeCommand { get; private set; }
 
         public IWindowsDataSource DataSource { get; private set; }
-        public INavigationService NavigationService { get; private set; }
 
         private Product _Product;
         public Product Product
@@ -42,9 +41,9 @@ namespace AdventureWorksCatalog.ViewModel
         }
 
         public ProductPageViewModel(IWindowsDataSource datasource, INavigationService navigationService)
+            : base(navigationService)
         {
             this.DataSource = datasource;
-            this.NavigationService = navigationService;
 
             NavigateHomeCommand = new RelayCommand(OnNavigateHomeCommand);
         }
@@ -132,7 +131,7 @@ namespace AdventureWorksCatalog.ViewModel
         }
         #endregion
 
-        public void Initialize(object parameter)
+        public override void Initialize(object parameter)
         {
             Product product = parameter as Product;
             if (product == null)
@@ -140,6 +139,7 @@ namespace AdventureWorksCatalog.ViewModel
                 throw new ArgumentNullException("parameter", "parameter cannot be null");
             }
             this.LoadAsync(product.Id);
+            base.Initialize(parameter);
         }
     }
 }

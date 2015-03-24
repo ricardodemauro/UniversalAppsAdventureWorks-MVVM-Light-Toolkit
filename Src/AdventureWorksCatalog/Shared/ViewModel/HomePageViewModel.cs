@@ -12,13 +12,12 @@ using AdventureWorksCatalog.Extensions;
 
 namespace AdventureWorksCatalog.ViewModel
 {
-    public class HomePageViewModel : ViewModelBase
+    public class HomePageViewModel : AWViewModelBase
     {
         public ICommand NavigateToCategoryCommand { get; private set; }
         public ICommand NavigateToProductCommand { get; private set; }
         public ICommand RefreshCommand { get; private set; }
         public IWindowsDataSource DataSource { get; private set; }
-        public INavigationService NavigationService { get; private set; }
 
         private bool _loading;
 
@@ -49,13 +48,14 @@ namespace AdventureWorksCatalog.ViewModel
         }
 
         public HomePageViewModel(IWindowsDataSource datasource, INavigationService navigationService)
+            : base(navigationService)
         {
             this.NavigateToCategoryCommand = new RelayCommand<Category>(OnNavigateToCategoryCommand);
             this.NavigateToProductCommand = new RelayCommand<Product>(OnNavigateToProductCommand);
+
             this.RefreshCommand = new RelayCommand(() => RefreshAsync(), () => !this.Loading);
 
             this.DataSource = datasource;
-            this.NavigationService = navigationService;
 
             this.RefreshAsync();
         }
@@ -78,7 +78,7 @@ namespace AdventureWorksCatalog.ViewModel
             await Task.Delay(5000);
 #endif
             var categories = await this.DataSource.GetCategoriesAndItemsAsync(4);
-            
+
             Categories = new ObservableCollection<Category>();
             Categories.AddRange(categories);
 
