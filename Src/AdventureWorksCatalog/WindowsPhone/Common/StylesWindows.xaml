@@ -5,6 +5,7 @@
 
     <local:StringFormatConverter x:Key="StringFormatConverter" />
     <local:StringToImageConverter x:Key="StringToImageConverter" />
+    <local:ItemClickEventArgsToProductConverter x:Key="ItemClickEventArgsToProductConverter" />
 
     <ControlTemplate x:Key="HeaderButtonTemplate" TargetType="Button">
         <Grid Background="Transparent">

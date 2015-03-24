@@ -153,7 +153,7 @@
 						</GridView.GroupStyle>
 						<Interactivity:Interaction.Behaviors>
 							<Core:EventTriggerBehavior EventName="ItemClick">
-								<Core:InvokeCommandAction Command="{Binding NavigateToProductCommand, Mode=OneWay}"/>
+								<Core:InvokeCommandAction Command="{Binding NavigateToProductCommand, Mode=OneWay}" InputConverter="{StaticResource ItemClickEventArgsToProductConverter}"/>
 							</Core:EventTriggerBehavior>
 						</Interactivity:Interaction.Behaviors>
 					</GridView>
