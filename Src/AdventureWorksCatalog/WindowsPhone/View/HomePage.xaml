@@ -27,11 +27,10 @@
                     <ListView ItemsSource="{Binding Products}"
                               SelectionMode="Single"
                               IsItemClickEnabled="True"
-                              ItemClick="Product_Click"
                               ContinuumNavigationTransitionInfo.ExitElementContainer="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Holding="GridProducts_Holding">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
@@ -39,7 +38,7 @@
 
                                     <FlyoutBase.AttachedFlyout>
                                         <MenuFlyout>
-                                            <MenuFlyoutItem Text="{StaticResource ShareName}" Click="MenuFlyoutItemShare_Click"/>
+                                            <MenuFlyoutItem Text="Share"/>
                                         </MenuFlyout>
                                     </FlyoutBase.AttachedFlyout>
 

@@ -6,6 +6,7 @@ using AdventureWorksCatalog.ViewModel.Commands;
 using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using AdventureWorksCatalog.DataSources;
+using AdventureWorksCatalog.Interfaces.DataSources;
 
 namespace AdventureWorksCatalog.ViewModel
 {
@@ -13,6 +14,8 @@ namespace AdventureWorksCatalog.ViewModel
     {
         public ICommand NavigateToCategoryCommand { get; private set; }
         public ICommand NavigateToProductCommand { get; private set; }
+
+        public IWindowsDataSource DataSource { get; private set; }
 
         private Company _Company;
         public Company Company
@@ -28,10 +31,13 @@ namespace AdventureWorksCatalog.ViewModel
             set { Set(ref this._Categories, value); }
         }
 
-        public HomePageViewModel()
+        public HomePageViewModel(IWindowsDataSource datasource)
         {
             NavigateToCategoryCommand = new DelegateCommand(OnNavigateToCategoryCommand);
             NavigateToProductCommand = new DelegateCommand(OnNavigateToProductCommand);
+            DataSource = datasource;
+
+            this.LoadAsync();
         }
 
         private void OnNavigateToProductCommand(object parameter)
@@ -46,13 +52,13 @@ namespace AdventureWorksCatalog.ViewModel
 
         public async Task LoadAsync()
         {
-            var categories = await DataSource.Instance.GetCategoriesAndItemsAsync(4);
+            var categories = await this.DataSource.GetCategoriesAndItemsAsync(4);
             Categories = new ObservableCollection<Category>();
             foreach (var category in categories)
             {
                 Categories.Add(category);
             }
-            Company = await DataSource.Instance.GetCompanyAsync();
+            Company = await this.DataSource.GetCompanyAsync();
         }
     }
 }
