@@ -1,11 +1,13 @@
 ﻿using AdventureWorksCatalog.DataSources;
+using AdventureWorksCatalog.Interfaces.DataSources;
 using AdventureWorksCatalog.Portable.Model;
-using AdventureWorksCatalog.ViewModel.Commands;
-using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Views;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using AdventureWorksCatalog.Extensions;
 
 namespace AdventureWorksCatalog.ViewModel
 {
@@ -14,6 +16,8 @@ namespace AdventureWorksCatalog.ViewModel
         public ICommand NavigateToCategoryCommand { get; private set; }
         public ICommand NavigateHomeCommand { get; private set; }
         public ICommand NavigateToProductCommand { get; private set; }
+        public IWindowsDataSource DataSource { get; private set; }
+        public INavigationService NavigationService { get; private set; }
 
         private string _Query;
         public string Query
@@ -36,38 +40,40 @@ namespace AdventureWorksCatalog.ViewModel
             set { Set(ref this._Categories, value); }
         }
 
-        public SearchPageViewModel()
+        public SearchPageViewModel(IWindowsDataSource datasource, INavigationService navigationService)
         {
-            NavigateHomeCommand = new DelegateCommand(OnNavigateHomeCommand);
-            NavigateToCategoryCommand = new DelegateCommand(OnNavigateToCategoryCommand);
-            NavigateToProductCommand = new DelegateCommand(OnNavigateToProductCommand);
+            this.DataSource = datasource;
+            this.NavigationService = navigationService;
+
+            NavigateHomeCommand = new RelayCommand(OnNavigateHomeCommand);
+            NavigateToCategoryCommand = new RelayCommand<Category>(OnNavigateToCategoryCommand);
+            NavigateToProductCommand = new RelayCommand<Product>(OnNavigateToProductCommand);
         }
 
-        private void OnNavigateHomeCommand(object parameter)
+        private void OnNavigateHomeCommand()
         {
-            //PublishMessage(new NavigateMessage("HomePage", parameter));
+            this.NavigationService.NavigateTo("HomePage");
         }
 
-        private void OnNavigateToProductCommand(object parameter)
+        private void OnNavigateToProductCommand(Product parameter)
         {
-            //PublishMessage(new NavigateMessage("ProductPage", parameter));
+            this.NavigationService.NavigateTo("ProductPage", parameter);
         }
 
-        private void OnNavigateToCategoryCommand(object parameter)
+        private void OnNavigateToCategoryCommand(Category parameter)
         {
-            //PublishMessage(new NavigateMessage("CategoryPage", parameter));
+            this.NavigationService.NavigateTo("CategoryPage", parameter);
         }
 
         public async Task LoadAsync(string query)
         {
             Query = query;
-            var categories = await DataSource.Instance.SearchCategoriesAndItemsAsync(query);
+
+            var categories = await this.DataSource.SearchCategoriesAndItemsAsync(query);
             Categories = new ObservableCollection<Category>();
-            foreach (var category in categories)
-            {
-                Categories.Add(category);
-            }
-            Company = await DataSource.Instance.GetCompanyAsync();
+            this.Categories.AddRange(categories);
+
+            Company = await this.DataSource.GetCompanyAsync();
         }
     }
 }

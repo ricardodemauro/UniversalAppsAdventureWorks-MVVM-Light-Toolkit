@@ -65,7 +65,7 @@
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton Icon="Refresh" 
-                          Command="{Binding RefreshCommand}" />
+                          Command="{Binding RefreshCommand}" Label="Refresh" />
         </CommandBar>
     </Page.BottomAppBar>
     
@@ -115,7 +115,7 @@
 				<DataTemplate>
 					<GridView 
 						ItemsSource="{Binding Source={StaticResource groupedProductsViewSource}}"
-						SelectionMode="None"
+						SelectionMode="Multiple"
 						IsSwipeEnabled="false"
 						IsItemClickEnabled="True" 
                         Style="{StaticResource GridViewStyleProduto}">
@@ -170,7 +170,7 @@
 				</DataTemplate>
 			</HubSection>
 		</Hub>
-        <ProgressBar HorizontalAlignment="Left" Height="10" VerticalAlignment="Top" Width="1252" Margin="51,10,0,0" IsIndeterminate="{Binding Loading}"/>
+        <ProgressBar HorizontalAlignment="Left" Height="10" VerticalAlignment="Top" Width="1252" Margin="51,10,0,0" IsIndeterminate="{Binding Loading}" IsDoubleTapEnabled="False" IsHoldingEnabled="False" IsRightTapEnabled="False" IsTapEnabled="False" RequestedTheme="Light"/>
     </Grid>
 </Page>
 

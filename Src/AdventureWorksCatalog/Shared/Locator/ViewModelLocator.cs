@@ -11,6 +11,7 @@
 
 using AdventureWorksCatalog.DataSources;
 using AdventureWorksCatalog.Interfaces.DataSources;
+using AdventureWorksCatalog.Navigation;
 using AdventureWorksCatalog.View;
 using AdventureWorksCatalog.ViewModel;
 using AdventureWorksCatalog.ViewModel.Messages;
@@ -55,7 +56,7 @@ namespace AdventureWorksCatalog.Locator
 
         private static INavigationService CreateNavigationService()
         {
-            NavigationService service = new NavigationService();
+            AWNavigationService service = new AWNavigationService();
             service.Configure("HomePage", typeof(HomePage));
             service.Configure("CategoryPage", typeof(CategoryPage));
             service.Configure("ProductPage", typeof(ProductPage));

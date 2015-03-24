@@ -1,8 +1,10 @@
 ﻿using AdventureWorksCatalog.DataSources;
+using AdventureWorksCatalog.Interfaces.DataSources;
 using AdventureWorksCatalog.Portable.Model;
-using AdventureWorksCatalog.ViewModel.Commands;
 using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Views;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +13,12 @@ using System.Xml;
 
 namespace AdventureWorksCatalog.ViewModel
 {
-    public class ProductPageViewModel : ViewModelBase
+    public class ProductPageViewModel : ViewModelBase, IViewModel
     {
         public ICommand NavigateHomeCommand { get; private set; }
+
+        public IWindowsDataSource DataSource { get; private set; }
+        public INavigationService NavigationService { get; private set; }
 
         private Product _Product;
         public Product Product
@@ -36,22 +41,24 @@ namespace AdventureWorksCatalog.ViewModel
             set { Set(ref this._Company, value); }
         }
 
-        public ProductPageViewModel()
+        public ProductPageViewModel(IWindowsDataSource datasource, INavigationService navigationService)
         {
-            NavigateHomeCommand = new DelegateCommand(OnNavigateHomeCommand);
+            this.DataSource = datasource;
+            this.NavigationService = navigationService;
+
+            NavigateHomeCommand = new RelayCommand(OnNavigateHomeCommand);
         }
 
-        private void OnNavigateHomeCommand(object parameter)
+        private void OnNavigateHomeCommand()
         {
-            MessengerInstance.Send<NavigateMessage>(new NavigateMessage("HomePage", parameter));
-            //PublishMessage(new NavigateMessage("HomePage", parameter));
+            MessengerInstance.Send<NavigateMessage>(new NavigateMessage("HomePage"));
         }
 
         public async Task LoadAsync(int productId)
         {
-            Company = await DataSource.Instance.GetCompanyAsync();
-            
-            var product = await DataSource.Instance.GetProductAsync(productId);
+            Company = await DataSource.GetCompanyAsync();
+
+            var product = await DataSource.GetProductAsync(productId);
             if (product != null)
             {
                 Category = product.Category;
@@ -59,6 +66,7 @@ namespace AdventureWorksCatalog.ViewModel
             Product = product;
         }
 
+        #region Share
         public Uri GetUriToShare()
         {
             if (Product != null && !String.IsNullOrEmpty(Product.ProductUrl))
@@ -72,7 +80,7 @@ namespace AdventureWorksCatalog.ViewModel
         public string GetHtmlToShare()
         {
             var stringBuilder = new StringBuilder();
-            var settings = new XmlWriterSettings() {  OmitXmlDeclaration= true };
+            var settings = new XmlWriterSettings() { OmitXmlDeclaration = true };
             using (var xmlWriter = XmlWriter.Create(stringBuilder, settings))
             {
                 xmlWriter.WriteStartElement("div");
@@ -99,10 +107,6 @@ namespace AdventureWorksCatalog.ViewModel
 
                 if (Product != null)
                 {
-                    //xmlWriter.WriteStartElement("img");
-                    //xmlWriter.WriteAttributeString("src", new Uri(new Uri("ms-appx:///"), Product.PhotoPath).ToString());
-                    //xmlWriter.WriteEndElement();
-
                     xmlWriter.WriteElementString("h2", Product.Category.Name);
 
                     xmlWriter.WriteStartElement("br");
@@ -125,6 +129,17 @@ namespace AdventureWorksCatalog.ViewModel
             if (Product == null || Company == null)
                 return null;
             return string.Format("{0} - {1}", Company.Name, Product.Name);
+        }
+        #endregion
+
+        public void Initialize(object parameter)
+        {
+            Product product = parameter as Product;
+            if (product == null)
+            {
+                throw new ArgumentNullException("parameter", "parameter cannot be null");
+            }
+            this.LoadAsync(product.Id);
         }
     }
 }

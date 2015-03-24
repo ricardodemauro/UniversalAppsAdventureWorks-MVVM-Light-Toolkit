@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using AdventureWorksCatalog.ViewModel.Commands;
 using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using AdventureWorksCatalog.DataSources;
@@ -15,11 +14,11 @@ namespace AdventureWorksCatalog.ViewModel
 {
     public class HomePageViewModel : ViewModelBase
     {
-        public INavigationService NavigationService { get; private set; }
         public ICommand NavigateToCategoryCommand { get; private set; }
         public ICommand NavigateToProductCommand { get; private set; }
-        public RelayCommand RefreshCommand { get; private set; }
+        public ICommand RefreshCommand { get; private set; }
         public IWindowsDataSource DataSource { get; private set; }
+        public INavigationService NavigationService { get; private set; }
 
         private bool _loading;
 
@@ -74,8 +73,10 @@ namespace AdventureWorksCatalog.ViewModel
         public async Task RefreshAsync()
         {
             this.Loading = true;
-            this.RefreshCommand.RaiseCanExecuteChanged();
 
+#if DEBUG
+            await Task.Delay(5000);
+#endif
             var categories = await this.DataSource.GetCategoriesAndItemsAsync(4);
             
             Categories = new ObservableCollection<Category>();
@@ -84,7 +85,6 @@ namespace AdventureWorksCatalog.ViewModel
             Company = await this.DataSource.GetCompanyAsync();
 
             this.Loading = false;
-            this.RefreshCommand.RaiseCanExecuteChanged();
         }
     }
 }

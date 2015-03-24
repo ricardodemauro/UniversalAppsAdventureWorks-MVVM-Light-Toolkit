@@ -1,17 +1,22 @@
 ﻿using AdventureWorksCatalog.Portable.Model;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using AdventureWorksCatalog.ViewModel.Commands;
 using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using AdventureWorksCatalog.DataSources;
+using System;
+using GalaSoft.MvvmLight.Command;
+using AdventureWorksCatalog.Interfaces.DataSources;
+using GalaSoft.MvvmLight.Views;
 
 namespace AdventureWorksCatalog.ViewModel
 {
-    public class CategoryPageViewModel : ViewModelBase
+    public class CategoryPageViewModel : ViewModelBase, IViewModel
     {
         public ICommand NavigateHomeCommand { get; private set; }
         public ICommand NavigateToProductCommand { get; private set; }
+        public IWindowsDataSource DataSource { get; private set; }
+        public INavigationService NavigationService { get; private set; }
 
         private Company _Company;
         public Company Company
@@ -27,28 +32,39 @@ namespace AdventureWorksCatalog.ViewModel
             set { Set(ref this._Category, value); }
         }
 
-        public CategoryPageViewModel()
+        public CategoryPageViewModel(IWindowsDataSource datasource, INavigationService navigationService)
         {
-            NavigateHomeCommand = new DelegateCommand(OnNavigateHomeCommand);
-            NavigateToProductCommand = new DelegateCommand(OnNavigateToProductCommand);
+            this.DataSource = datasource;
+            this.NavigationService = navigationService;
+
+            NavigateHomeCommand = new RelayCommand(OnNavigateHomeCommand);
+            NavigateToProductCommand = new RelayCommand<Product>(OnNavigateToProductCommand);
         }
 
-        private void OnNavigateToProductCommand(object parameter)
+        private void OnNavigateToProductCommand(Product parameter)
         {
-            MessengerInstance.Send<NavigateMessage>(new NavigateMessage("ProductPage", parameter));
-            //PublishMessage(new NavigateMessage("ProductPage", parameter));
+            this.NavigationService.NavigateTo("ProductPage", parameter);
         }
 
-        private void OnNavigateHomeCommand(object parameter)
+        private void OnNavigateHomeCommand()
         {
-            MessengerInstance.Send<NavigateMessage>(new NavigateMessage("HomePage", parameter));
-            //PublishMessage(new NavigateMessage("HomePage", parameter));
+            this.NavigationService.NavigateTo("HomePage");
         }
 
         public async Task LoadAsync(int categoryId)
         {
-            Category = await DataSource.Instance.GetCategoryAsync(categoryId);
-            Company = await DataSource.Instance.GetCompanyAsync();
+            Category = await this.DataSource.GetCategoryAsync(categoryId);
+            Company = await this.DataSource.GetCompanyAsync();
+        }
+
+        public void Initialize(object parameter)
+        {
+            Category category = parameter as Category;
+            if (category == null)
+            {
+                throw new ArgumentNullException("parameter", "parameter cannot be null");
+            }
+            this.LoadAsync(category.Id);
         }
     }
 }

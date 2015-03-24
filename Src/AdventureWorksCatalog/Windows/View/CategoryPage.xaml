@@ -9,9 +9,9 @@
     x:Name="Category">
 
     <Page.DataContext>
-        <Binding Path="Category" Source="{StaticResource Locator}" />
+        <Binding Path="CategoryPage" Source="{StaticResource Locator}" />
     </Page.DataContext>
-    
+
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="{Binding Company.BackgroundPath, Converter={StaticResource StringToImageConverter}}" Stretch="UniformToFill" />
