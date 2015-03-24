@@ -8,15 +8,32 @@ using GalaSoft.MvvmLight;
 using AdventureWorksCatalog.DataSources;
 using AdventureWorksCatalog.Interfaces.DataSources;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Views;
+using AdventureWorksCatalog.Extensions;
 
 namespace AdventureWorksCatalog.ViewModel
 {
     public class HomePageViewModel : ViewModelBase
     {
+        public INavigationService NavigationService { get; private set; }
         public ICommand NavigateToCategoryCommand { get; private set; }
         public ICommand NavigateToProductCommand { get; private set; }
-
+        public RelayCommand RefreshCommand { get; private set; }
         public IWindowsDataSource DataSource { get; private set; }
+
+        private bool _loading;
+
+        public bool Loading
+        {
+            get
+            {
+                return _loading;
+            }
+            set
+            {
+                Set(ref _loading, value);
+            }
+        }
 
         private Company _Company;
         public Company Company
@@ -32,34 +49,42 @@ namespace AdventureWorksCatalog.ViewModel
             set { Set(ref this._Categories, value); }
         }
 
-        public HomePageViewModel(IWindowsDataSource datasource)
+        public HomePageViewModel(IWindowsDataSource datasource, INavigationService navigationService)
         {
-            NavigateToCategoryCommand = new RelayCommand<Category>(OnNavigateToCategoryCommand);
-            NavigateToProductCommand = new RelayCommand<Product>(OnNavigateToProductCommand);
-            DataSource = datasource;
+            this.NavigateToCategoryCommand = new RelayCommand<Category>(OnNavigateToCategoryCommand);
+            this.NavigateToProductCommand = new RelayCommand<Product>(OnNavigateToProductCommand);
+            this.RefreshCommand = new RelayCommand(() => RefreshAsync(), () => !this.Loading);
 
-            this.LoadAsync();
+            this.DataSource = datasource;
+            this.NavigationService = navigationService;
+
+            this.RefreshAsync();
         }
 
         private void OnNavigateToProductCommand(Product parameter)
         {
-            MessengerInstance.Send<NavigateMessage>(new NavigateMessage("ProductPage", parameter));
+            this.NavigationService.NavigateTo("ProductPage", parameter);
         }
 
         private void OnNavigateToCategoryCommand(Category parameter)
         {
-            MessengerInstance.Send<NavigateMessage>(new NavigateMessage("CategoryPage", parameter));
+            this.NavigationService.NavigateTo("CategoryPage", parameter);
         }
 
-        public async Task LoadAsync()
+        public async Task RefreshAsync()
         {
+            this.Loading = true;
+            this.RefreshCommand.RaiseCanExecuteChanged();
+
             var categories = await this.DataSource.GetCategoriesAndItemsAsync(4);
+            
             Categories = new ObservableCollection<Category>();
-            foreach (var category in categories)
-            {
-                Categories.Add(category);
-            }
+            Categories.AddRange(categories);
+
             Company = await this.DataSource.GetCompanyAsync();
+
+            this.Loading = false;
+            this.RefreshCommand.RaiseCanExecuteChanged();
         }
     }
 }

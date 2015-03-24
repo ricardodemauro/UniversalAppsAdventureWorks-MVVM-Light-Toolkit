@@ -11,12 +11,15 @@
 
 using AdventureWorksCatalog.DataSources;
 using AdventureWorksCatalog.Interfaces.DataSources;
+using AdventureWorksCatalog.View;
 using AdventureWorksCatalog.ViewModel;
 using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
+using System;
 
 namespace AdventureWorksCatalog.Locator
 {
@@ -47,7 +50,19 @@ namespace AdventureWorksCatalog.Locator
             SimpleIoc.Default.Register<SearchPageViewModel>();
             SimpleIoc.Default.Register<ProductPageViewModel>();
 
-            //SimpleIoc.Default.Register<MessageHandler>();
+            SimpleIoc.Default.Register<INavigationService>(CreateNavigationService, true);
+        }
+
+        private static INavigationService CreateNavigationService()
+        {
+            NavigationService service = new NavigationService();
+            service.Configure("HomePage", typeof(HomePage));
+            service.Configure("CategoryPage", typeof(CategoryPage));
+            service.Configure("ProductPage", typeof(ProductPage));
+#if !WINDOWS_PHONE_APP
+            service.Configure("SearchPage", typeof(SearchPage));
+#endif
+            return service;
         }
 
         /// <summary>

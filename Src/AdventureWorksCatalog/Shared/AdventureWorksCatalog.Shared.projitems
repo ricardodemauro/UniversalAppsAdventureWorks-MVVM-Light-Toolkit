@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\CollectionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\ItemClickEventArgsToProductConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\StringFormatConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\StringToImageConverter.cs" />

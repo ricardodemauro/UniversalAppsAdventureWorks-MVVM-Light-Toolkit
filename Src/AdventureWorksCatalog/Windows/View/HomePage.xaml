@@ -61,6 +61,14 @@
 	<Page.DataContext>
 		<Binding Path="HomePage" Source="{StaticResource Locator}"/>
 	</Page.DataContext>
+    
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Refresh" 
+                          Command="{Binding RefreshCommand}" />
+        </CommandBar>
+    </Page.BottomAppBar>
+    
 	<Grid>
 		<Grid.Background>
 			<ImageBrush ImageSource="{Binding Company.BackgroundPath, Converter={StaticResource StringToImageConverter}}" Stretch="UniformToFill" />
@@ -70,6 +78,7 @@
 				<EntranceThemeTransition/>
 			</TransitionCollection>
 		</Grid.ChildrenTransitions>
+        
 		<Hub Padding="40,40,0,0">
 			<Hub.Header>
 				<Grid Margin="0,20,0,0">
@@ -161,5 +170,6 @@
 				</DataTemplate>
 			</HubSection>
 		</Hub>
-	</Grid>
+        <ProgressBar HorizontalAlignment="Left" Height="10" VerticalAlignment="Top" Width="1252" Margin="51,10,0,0" IsIndeterminate="{Binding Loading}"/>
+    </Grid>
 </Page>
