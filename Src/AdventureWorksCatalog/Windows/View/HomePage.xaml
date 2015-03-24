@@ -115,7 +115,7 @@
 				<DataTemplate>
 					<GridView 
 						ItemsSource="{Binding Source={StaticResource groupedProductsViewSource}}"
-						SelectionMode="Multiple"
+						SelectionMode="None"
 						IsSwipeEnabled="false"
 						IsItemClickEnabled="True" 
                         Style="{StaticResource GridViewStyleProduto}">

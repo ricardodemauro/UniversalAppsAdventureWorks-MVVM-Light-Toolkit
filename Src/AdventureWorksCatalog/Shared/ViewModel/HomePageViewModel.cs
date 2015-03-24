@@ -9,6 +9,7 @@ using AdventureWorksCatalog.Interfaces.DataSources;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
 using AdventureWorksCatalog.Extensions;
+using AdventureWorksCatalog.Locator;
 
 namespace AdventureWorksCatalog.ViewModel
 {
@@ -62,12 +63,12 @@ namespace AdventureWorksCatalog.ViewModel
 
         private void OnNavigateToProductCommand(Product parameter)
         {
-            this.NavigationService.NavigateTo("ProductPage", parameter);
+            this.NavigationService.NavigateTo(PagesName.ProductPageName, parameter);
         }
 
         private void OnNavigateToCategoryCommand(Category parameter)
         {
-            this.NavigationService.NavigateTo("CategoryPage", parameter);
+            this.NavigationService.NavigateTo(PagesName.CategoryPageName, parameter);
         }
 
         public async Task RefreshAsync()

@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AdventureWorksCatalog.Extensions;
+using AdventureWorksCatalog.Locator;
 
 namespace AdventureWorksCatalog.ViewModel
 {
@@ -52,17 +53,17 @@ namespace AdventureWorksCatalog.ViewModel
 
         private void OnNavigateHomeCommand()
         {
-            this.NavigationService.NavigateTo("HomePage");
+            this.NavigationService.NavigateTo(PagesName.HomePageName);
         }
 
         private void OnNavigateToProductCommand(Product parameter)
         {
-            this.NavigationService.NavigateTo("ProductPage", parameter);
+            this.NavigationService.NavigateTo(PagesName.ProductPageName, parameter);
         }
 
         private void OnNavigateToCategoryCommand(Category parameter)
         {
-            this.NavigationService.NavigateTo("CategoryPage", parameter);
+            this.NavigationService.NavigateTo(PagesName.CategoryPageName, parameter);
         }
 
         public async Task LoadAsync(string query)
@@ -74,6 +75,15 @@ namespace AdventureWorksCatalog.ViewModel
             this.Categories.AddRange(categories);
 
             Company = await this.DataSource.GetCompanyAsync();
+        }
+
+        public async override void Initialize(object parameter)
+        {
+            if (parameter is string)
+            {
+                await LoadAsync(parameter as string);
+            }
+            base.Initialize(parameter);
         }
     }
 }

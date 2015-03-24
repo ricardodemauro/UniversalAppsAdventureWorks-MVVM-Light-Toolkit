@@ -57,11 +57,11 @@ namespace AdventureWorksCatalog.Locator
         private static INavigationService CreateNavigationService()
         {
             AWNavigationService service = new AWNavigationService();
-            service.Configure("HomePage", typeof(HomePage));
-            service.Configure("CategoryPage", typeof(CategoryPage));
-            service.Configure("ProductPage", typeof(ProductPage));
+            service.Configure(PagesName.HomePageName, PagesName.HomePageType);
+            service.Configure(PagesName.CategoryPageName, PagesName.CategoryPageType);
+            service.Configure(PagesName.ProductPageName, PagesName.ProductPageType);
 #if !WINDOWS_PHONE_APP
-            service.Configure("SearchPage", typeof(SearchPage));
+            service.Configure(PagesName.SearchPageName, PagesName.SearchPageType);
 #endif
             return service;
         }
@@ -69,8 +69,7 @@ namespace AdventureWorksCatalog.Locator
         /// <summary>
         /// Gets the Main property.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
-            "CA1822:MarkMembersAsStatic",
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic",
             Justification = "This non-static member is needed for data binding purposes.")]
         public HomePageViewModel HomePage
         {
@@ -80,6 +79,11 @@ namespace AdventureWorksCatalog.Locator
             }
         }
 
+        /// <summary>
+        /// Gets the Main property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
         public CategoryPageViewModel CategoryPage
         {
             get
@@ -88,6 +92,11 @@ namespace AdventureWorksCatalog.Locator
             }
         }
 
+        /// <summary>
+        /// Gets the Main property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
         public ProductPageViewModel ProductPage
         {
             get
@@ -95,5 +104,35 @@ namespace AdventureWorksCatalog.Locator
                 return ServiceLocator.Current.GetInstance<ProductPageViewModel>();
             }
         }
+
+        /// <summary>
+        /// Gets the Main property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public SearchPageViewModel SearchPage
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<SearchPageViewModel>();
+            }
+        }
+    }
+
+    public static class PagesName
+    {
+        public static readonly Type HomePageType = typeof(HomePage);
+        public static readonly string HomePageName = "HomePage";
+
+        public static readonly Type CategoryPageType = typeof(CategoryPage);
+        public static readonly string CategoryPageName = "CategoryPage";
+
+        public static readonly Type ProductPageType = typeof(ProductPage);
+        public static readonly string ProductPageName = "ProductPage";
+
+#if !WINDOWS_PHONE_APP
+        public static readonly Type SearchPageType = typeof(SearchPage);
+        public static readonly string SearchPageName = "SearchPage";
+#endif
     }
 }

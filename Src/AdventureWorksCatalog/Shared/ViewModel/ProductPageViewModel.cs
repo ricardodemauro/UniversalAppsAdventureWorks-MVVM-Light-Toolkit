@@ -1,5 +1,6 @@
 ﻿using AdventureWorksCatalog.DataSources;
 using AdventureWorksCatalog.Interfaces.DataSources;
+using AdventureWorksCatalog.Locator;
 using AdventureWorksCatalog.Portable.Model;
 using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
@@ -50,7 +51,7 @@ namespace AdventureWorksCatalog.ViewModel
 
         private void OnNavigateHomeCommand()
         {
-            MessengerInstance.Send<NavigateMessage>(new NavigateMessage("HomePage"));
+            this.NavigationService.NavigateTo(PagesName.HomePageName);
         }
 
         public async Task LoadAsync(int productId)
