@@ -1,7 +1,4 @@
-﻿using AdventureWorksCatalog.Common;
-using AdventureWorksCatalog.Portable.Model;
-using AdventureWorksCatalog.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,32 +25,6 @@ namespace AdventureWorksCatalog.View
         public HomePage()
         {
             this.InitializeComponent();
-        }
-
-        private void CategoryBorder_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            // This code is used to trigger the command even though
-            // Blend Behaviors (and thus EventToCommand) are not available
-            // for Windows 8.
-
-            var element = (FrameworkElement)sender;
-            var item = element.DataContext as Product;
-
-            if (item != null)
-            {
-                var vm = (HomePageViewModel)DataContext;
-                vm.NavigateToProductCommand.Execute(item);
-            }
-        }
-
-        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-
-        }
-
-        private void Grid_PointerPressed(object sender, PointerRoutedEventArgs e)
-        {
-
         }
     }
 }

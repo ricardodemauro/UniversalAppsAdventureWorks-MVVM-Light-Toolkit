@@ -2,24 +2,51 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using AdventureWorksCatalog.ViewModel.Commands;
 using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using AdventureWorksCatalog.DataSources;
-using GalaSoft.MvvmLight.Views;
 using AdventureWorksCatalog.Interfaces.DataSources;
 using GalaSoft.MvvmLight.Command;
-using Windows.Foundation;
+using GalaSoft.MvvmLight.Views;
+using AdventureWorksCatalog.Extensions;
+using AdventureWorksCatalog.Locator;
 
 namespace AdventureWorksCatalog.ViewModel
 {
-    public class HomePageViewModel : ViewModelBase
+    public class HomePageViewModel : AWViewModelBase
     {
-        private readonly INavigationService _navigationService;
-        private readonly IWindowsDataSource _service;
-
+#if !WINDOWS_PHONE_APP
         public ICommand NavigateToCategoryCommand { get; private set; }
-        public RelayCommand<Product> NavigateToProductCommand { get; private set; }
+#endif
+        public ICommand NavigateToProductCommand { get; private set; }
+        public ICommand RefreshCommand { get; private set; }
+        public IWindowsDataSource DataSource { get; private set; }
+        private bool _loading;
+        private Product selectedProductFlyout;
+
+        public Product SelectedProdutoFlyout
+        {
+            get
+            {
+                return selectedProductFlyout;
+            }
+            set
+            {
+                Set(ref selectedProductFlyout, value);
+            }
+        }
+
+        public bool Loading
+        {
+            get
+            {
+                return _loading;
+            }
+            set
+            {
+                Set(ref _loading, value);
+            }
+        }
 
         private Company _Company;
         public Company Company
@@ -35,64 +62,47 @@ namespace AdventureWorksCatalog.ViewModel
             set { Set(ref this._Categories, value); }
         }
 
-        private string _lastPosition = "Click somewhere";
-        public string LastPosition
+        public HomePageViewModel(IWindowsDataSource datasource, INavigationService navigationService)
+            : base(navigationService)
         {
-            get
-            {
-                return _lastPosition;
-            }
-            set
-            {
-                Set(ref _lastPosition, value);
-            }
-        }
+#if !WINDOWS_PHONE_APP
+            this.NavigateToCategoryCommand = new RelayCommand<Category>(OnNavigateToCategoryCommand);
+#endif
+            this.NavigateToProductCommand = new RelayCommand<Product>(OnNavigateToProductCommand);
 
-        private RelayCommand<Point> _showPositionCommand;
+            this.RefreshCommand = new RelayCommand(() => RefreshAsync(), () => !this.Loading);
 
-        public RelayCommand<Point> Tap
-        {
-            get
-            {
-                return _showPositionCommand
-                        ?? (_showPositionCommand = new RelayCommand<Point>(
-                            point =>
-                            {
-                                LastPosition = string.Format("{0:N1}, {1:N1}", point.X, point.Y);
-                            }));
-            }
-        }
+            this.DataSource = datasource;
 
-        public HomePageViewModel(IWindowsDataSource service, INavigationService navigationService)
-        {
-            _service = service;
-            _navigationService = navigationService;
-
-            NavigateToCategoryCommand = new DelegateCommand(OnNavigateToCategoryCommand);
-            NavigateToProductCommand = new RelayCommand<Product>(OnNavigateToProductCommand);
-
-            this.LoadAsync();
+            this.RefreshAsync();
         }
 
         private void OnNavigateToProductCommand(Product parameter)
         {
-            _navigationService.NavigateTo("ProductPage", parameter);
+            this.NavigationService.NavigateTo(PagesName.ProductPageName, parameter);
         }
 
-        private void OnNavigateToCategoryCommand(object parameter)
+#if !WINDOWS_PHONE_APP
+        private void OnNavigateToCategoryCommand(Category parameter)
         {
-            _navigationService.NavigateTo("CategoryPage", parameter);
+            this.NavigationService.NavigateTo(PagesName.CategoryPageName, parameter);
         }
-
-        public async Task LoadAsync()
+#endif
+        public async Task RefreshAsync()
         {
-            var categories = await _service.GetCategoriesAndItemsAsync(4);
+            this.Loading = true;
+
+#if DEBUG
+            await Task.Delay(5000);
+#endif
+            var categories = await this.DataSource.GetCategoriesAndItemsAsync(4);
+
             Categories = new ObservableCollection<Category>();
-            foreach (var category in categories)
-            {
-                Categories.Add(category);
-            }
-            Company = await _service.GetCompanyAsync();
+            Categories.AddRange(categories);
+
+            Company = await this.DataSource.GetCompanyAsync();
+
+            this.Loading = false;
         }
     }
 }

@@ -4,18 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    mc:Ignorable="d"
-    xmlns:vm="using:AdventureWorksCatalog.Locator">
-    
+    mc:Ignorable="d">
     <Application.Resources>
         <ResourceDictionary>
-            <!--Global View Model Locator-->
-            <vm:ViewModelLocator x:Key="Locator" 
-                                 d:IsDataSource="True" />
-            
-            <x:String x:Key="AppName">Adventure Works Catalog</x:String>
-            <x:String x:Key="ShareName">Share</x:String>
-            
+            <x:String x:Key="AppName">Adventure Works</x:String>
+
+            <vm:ViewModelLocator xmlns:vm="using:AdventureWorksCatalog.Locator"
+                                   x:Key="Locator" />
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Common/StylesWindows.xaml" />
             </ResourceDictionary.MergedDictionaries>

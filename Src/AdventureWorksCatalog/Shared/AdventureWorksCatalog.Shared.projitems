@@ -15,20 +15,19 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Behaviors\EventToCommand.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\Converters\StringFormatConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\Converters\StringToImageConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\Converters\TapEventArgsConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\CollectionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\ItemClickEventArgsToProductConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\StringFormatConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\StringToImageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSources\DataSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSources\DataSourceWindows.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Design\DesignDataSourceWindows.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locator\ViewModelLocator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\CategoryPageViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Commands\DelegateCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\AWNavigationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\AWViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\HomePageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Messages\MessageHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Messages\NavigateMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ProductPageViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\SearchPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Data\Categories\Accessories.json" />
@@ -327,8 +326,5 @@
     <Content Include="$(MSBuildThisFileDirectory)Data\Photos\97.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Data\Photos\98.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Data\Photos\99.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Common\Converters\Events\" />
   </ItemGroup>
 </Project>

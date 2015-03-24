@@ -1,12 +1,12 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converter="using:AdventureWorksCatalog.Common.Converters">
+    xmlns:local="using:AdventureWorksCatalog.Common">
 
-    <converter:StringFormatConverter x:Key="StringFormatConverter" />
-    <converter:StringToImageConverter x:Key="StringToImageConverter" />
-    <converter:TapEventArgsConverter x:Key="TapEventArgsConverter" />
-    
+    <local:StringFormatConverter x:Key="StringFormatConverter" />
+    <local:StringToImageConverter x:Key="StringToImageConverter" />
+    <local:ItemClickEventArgsToProductConverter x:Key="ItemClickEventArgsToProductConverter" />
+
     <ControlTemplate x:Key="HeaderButtonTemplate" TargetType="Button">
         <Grid Background="Transparent">
             <StackPanel Orientation="Horizontal">

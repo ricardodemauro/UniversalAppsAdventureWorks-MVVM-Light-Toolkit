@@ -173,3 +173,4 @@
         <ProgressBar HorizontalAlignment="Left" Height="10" VerticalAlignment="Top" Width="1252" Margin="51,10,0,0" IsIndeterminate="{Binding Loading}" IsDoubleTapEnabled="False" IsHoldingEnabled="False" IsRightTapEnabled="False" IsTapEnabled="False" RequestedTheme="Light"/>
     </Grid>
 </Page>
+
