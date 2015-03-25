@@ -1,20 +1,8 @@
-﻿/*
-  In App.xaml:
-  <Application.Resources>
-      <vm:MvvmViewModelLocator1 xmlns:vm="using:AdventureWorksCatalog"
-                                   x:Key="Locator" />
-  </Application.Resources>
-  
-  In the View:
-  DataContext="{Binding Source={StaticResource Locator}, Path=ViewModelName}"
-*/
-
-using AdventureWorksCatalog.DataSources;
+﻿using AdventureWorksCatalog.DataSources;
 using AdventureWorksCatalog.Interfaces.DataSources;
 using AdventureWorksCatalog.Navigation;
 using AdventureWorksCatalog.View;
 using AdventureWorksCatalog.ViewModel;
-using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;

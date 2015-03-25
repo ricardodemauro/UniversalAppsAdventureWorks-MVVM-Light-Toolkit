@@ -18,5 +18,7 @@ namespace AdventureWorksCatalog.Interfaces.DataSources
         Task<Product> GetProductAsync(int productId);
 
         Task<Category> GetCategoryAsync(int categoryId);
+
+        Task LoadAsync();
     }
 }

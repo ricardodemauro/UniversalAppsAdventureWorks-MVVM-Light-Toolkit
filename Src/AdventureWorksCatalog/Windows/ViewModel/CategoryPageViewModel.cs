@@ -1,7 +1,6 @@
 ﻿using AdventureWorksCatalog.Portable.Model;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using AdventureWorksCatalog.DataSources;
 using System;

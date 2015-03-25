@@ -99,6 +99,11 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\AW-150x150.scale-100.png" />
+    <Content Include="Assets\AW-30x30.png" />
+    <Content Include="Assets\AW-44x44.scale-100.png" />
+    <Content Include="Assets\AW-620x300.png" />
+    <Content Include="Assets\Logo.scale-100.png" />
     <Content Include="Assets\Logo.scale-240.png" />
     <Content Include="Assets\SmallLogo.scale-240.png" />
     <Content Include="Assets\SplashScreen.scale-240.png" />

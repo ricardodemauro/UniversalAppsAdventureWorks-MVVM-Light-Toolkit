@@ -1,18 +1,16 @@
 ﻿using System;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 
 namespace AdventureWorksCatalog.Common
 {
-    public class ItemClickEventArgsToProductConverter : IValueConverter
+    public class StringFormatConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value is ItemClickEventArgs)
-            {
-                return ((ItemClickEventArgs)value).ClickedItem;
-            }
-            return null;
+            if (!(parameter is string))
+                return null;
+
+            return String.Format((string)parameter, value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -21,3 +19,4 @@ namespace AdventureWorksCatalog.Common
         }
     }
 }
+

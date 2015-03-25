@@ -7,10 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    x:Name="Product" FontFamily="Global User Interface">
-    <Page.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="ProductPage" />
-    </Page.DataContext>
+    DataContext="{Binding ProductPage, Source={StaticResource Locator}}">
     <Grid x:Name="LayoutRoot">
 
         <Grid.ChildrenTransitions>
@@ -24,21 +21,34 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        
+        
         <!-- Title Panel -->
         <StackPanel Grid.Row="0" Margin="19,0,0,0">
             <TextBlock Text="{Binding Company.Name}" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
-            <TextBlock Text="{Binding Product.Name}" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+            <TextBlock Text="{Binding Category.Name}" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
         </StackPanel>
 
-        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
-            <StackPanel Grid.Column="1" DataContext="{Binding Product}">
-                <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Margin="0,9.5,0,0" Grid.Column="0" HorizontalAlignment="Left" Height="352" Width="352">
-                    <Image Source="{Binding PhotoPath, Converter={StaticResource StringToImageConverter}}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Margin="10,10,9.667,9.667"/>
-                </Border>
-                <TextBlock Text="{Binding Description}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" Foreground="{ThemeResource PhoneMidBrush}" />
-                <TextBlock Text="{Binding Price, ConverterParameter=Price: $ \{0:0.00\}, Converter={StaticResource StringFormatConverter}}" TextWrapping="NoWrap" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}"/>
-            </StackPanel>
-        </Grid>
+        <FlipView Grid.Row="1"
+                ItemsSource="{Binding Category.Products}"
+                SelectedItem="{Binding Product, Mode=TwoWay}">
+            <FlipView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+                        <Border Background="#003D3D3D" Margin="0,0,0,215">
+                            <Image Source="{Binding PhotoPath, Converter={StaticResource StringToImageConverter}}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Name}"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Bottom" Height="100" Margin="10,0,10,40">
+                            <TextBlock Text="{Binding Name}" Margin="10,7,10,0"/>
+                            <StackPanel Margin="10,0" Orientation="Horizontal">
+                                <TextBlock Text="{Binding Price, ConverterParameter=$ \{0:0.00\}, Converter={StaticResource StringFormatConverter}}"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding Description}" Margin="10,7,10,0" FontFamily="Segoe UI" TextWrapping="WrapWholeWords"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </FlipView.ItemTemplate>
+        </FlipView>
     </Grid>
 </Page>
 

@@ -2,7 +2,6 @@
 using AdventureWorksCatalog.Interfaces.DataSources;
 using AdventureWorksCatalog.Locator;
 using AdventureWorksCatalog.Portable.Model;
-using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;

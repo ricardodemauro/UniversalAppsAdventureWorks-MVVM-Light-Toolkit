@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using AdventureWorksCatalog.ViewModel.Messages;
 using GalaSoft.MvvmLight;
 using AdventureWorksCatalog.DataSources;
 using AdventureWorksCatalog.Interfaces.DataSources;
@@ -93,7 +92,7 @@ namespace AdventureWorksCatalog.ViewModel
             this.Loading = true;
 
 #if DEBUG
-            await Task.Delay(5000);
+            await Task.Delay(2000);
 #endif
             var categories = await this.DataSource.GetCategoriesAndItemsAsync(4);
 
