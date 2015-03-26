@@ -25,6 +25,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\AWNavigationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\AWViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\HomePageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Messages\ShareContentMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ProductPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

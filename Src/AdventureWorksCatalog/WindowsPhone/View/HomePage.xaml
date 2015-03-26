@@ -37,12 +37,6 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <FlyoutBase.AttachedFlyout>
-                                        <MenuFlyout>
-                                            <MenuFlyoutItem Text="Share"/>
-                                        </MenuFlyout>
-                                    </FlyoutBase.AttachedFlyout>
-
                                     <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Margin="0,9.5,0,0" Grid.Column="0" HorizontalAlignment="Left">
                                         <Image Source="{Binding PhotoPath, Converter={StaticResource StringToImageConverter}}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Height="79" Width="79"/>
                                     </Border>
