@@ -3,6 +3,7 @@ using AdventureWorksCatalog.Interfaces.DataSources;
 using AdventureWorksCatalog.Navigation;
 using AdventureWorksCatalog.View;
 using AdventureWorksCatalog.ViewModel;
+using AdventureWorksCatalog.ViewModel.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
@@ -54,6 +55,19 @@ namespace AdventureWorksCatalog.Locator
             service.Configure(PagesName.SearchPageName, PagesName.SearchPageType);
 #endif
             return service;
+        }
+        //https://marcominerva.wordpress.com/2013/04/22/adding-share-support-to-viewmodel-with-mvvm-light-in-winrt/
+        internal static void RegisterSharingService()
+        {
+            SimpleIoc.Default.Register<SharingService>(createInstanceImmediately: true);
+        }
+
+        public static INavigationService NavigationService
+        {
+            get
+            {
+                return SimpleIoc.Default.GetInstance<INavigationService>();
+            }
         }
 
         /// <summary>

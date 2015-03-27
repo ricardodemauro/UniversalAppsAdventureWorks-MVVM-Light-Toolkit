@@ -8,8 +8,14 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     DataContext="{Binding ProductPage, Source={StaticResource Locator}}">
-    <Grid x:Name="LayoutRoot">
 
+    <Page.BottomAppBar>
+        <CommandBar IsSticky="False">
+            <AppBarButton Icon="ReShare" Label="Share" Command="{Binding ShareProductCommand}" />
+            <AppBarButton Icon="Like" Label="Like" />
+        </CommandBar>
+    </Page.BottomAppBar>
+    <Grid x:Name="LayoutRoot">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -21,8 +27,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        
-        
+
+
         <!-- Title Panel -->
         <StackPanel Grid.Row="0" Margin="19,0,0,0">
             <TextBlock Text="{Binding Company.Name}" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
@@ -34,16 +40,14 @@
                 SelectedItem="{Binding Product, Mode=TwoWay}">
             <FlipView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
-                        <Border Background="#003D3D3D" Margin="0,0,0,215">
-                            <Image Source="{Binding PhotoPath, Converter={StaticResource StringToImageConverter}}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Name}"/>
-                        </Border>
-                        <StackPanel VerticalAlignment="Bottom" Height="100" Margin="10,0,10,40">
-                            <TextBlock Text="{Binding Name}" Margin="10,7,10,0"/>
-                            <StackPanel Margin="10,0" Orientation="Horizontal">
-                                <TextBlock Text="{Binding Price, ConverterParameter=$ \{0:0.00\}, Converter={StaticResource StringFormatConverter}}"/>
-                            </StackPanel>
-                            <TextBlock Text="{Binding Description}" Margin="10,7,10,0" FontFamily="Segoe UI" TextWrapping="WrapWholeWords"/>
+                    <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,0,19,0">
+                        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <TextBlock Text="{Binding Name}" Margin="0,0,0,15" FontFamily="Segoe UI" FontSize="16"/>
+                            <Border Background="#003D3D3D" Margin="0,0,0,15">
+                                <Image Source="{Binding PhotoPath, Converter={StaticResource StringToImageConverter}}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Name}"/>
+                            </Border>
+                            <TextBlock Text="{Binding Price, ConverterParameter=$ \{0:0.00\}, Converter={StaticResource StringFormatConverter}}"/>
+                            <TextBlock Text="{Binding Description}" FontFamily="Segoe UI" HorizontalAlignment="Stretch" TextWrapping="WrapWholeWords"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

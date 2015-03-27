@@ -25,8 +25,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\AWNavigationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\AWViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\HomePageViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Messages\ShareContentMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ProductPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Services\ISupportSharing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Services\SharingService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Data\Categories\Accessories.json" />
@@ -325,5 +326,8 @@
     <Content Include="$(MSBuildThisFileDirectory)Data\Photos\97.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Data\Photos\98.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Data\Photos\99.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)ViewModel\Messages\" />
   </ItemGroup>
 </Project>

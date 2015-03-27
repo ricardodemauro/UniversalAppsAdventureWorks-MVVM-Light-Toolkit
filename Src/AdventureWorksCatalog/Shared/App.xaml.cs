@@ -1,4 +1,7 @@
-﻿using AdventureWorksCatalog.View;
+﻿using AdventureWorksCatalog.Locator;
+using AdventureWorksCatalog.View;
+using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,6 +41,13 @@ namespace AdventureWorksCatalog
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+        }
+
+        protected override void OnWindowCreated(WindowCreatedEventArgs args)
+        {
+            ViewModelLocator.RegisterSharingService();
+
+            base.OnWindowCreated(args);
         }
 
         /// <summary>
@@ -96,10 +106,11 @@ namespace AdventureWorksCatalog
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                if (!rootFrame.Navigate(typeof(HomePage), e.Arguments))
-                {
-                    throw new Exception("Failed to create initial page");
-                }
+                ViewModelLocator.NavigationService.NavigateTo(PagesName.HomePageName, e.Arguments);
+                //if (!rootFrame.Navigate(typeof(HomePage), e.Arguments))
+                //{
+                //    throw new Exception("Failed to create initial page");
+                //}
             }
 
             // Ensure the current window is active

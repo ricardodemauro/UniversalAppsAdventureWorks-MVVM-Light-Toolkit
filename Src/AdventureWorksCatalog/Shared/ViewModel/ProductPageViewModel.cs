@@ -2,6 +2,7 @@
 using AdventureWorksCatalog.Interfaces.DataSources;
 using AdventureWorksCatalog.Locator;
 using AdventureWorksCatalog.Portable.Model;
+using AdventureWorksCatalog.ViewModel.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
@@ -10,12 +11,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage.Streams;
 
 namespace AdventureWorksCatalog.ViewModel
 {
-    public class ProductPageViewModel : AWViewModelBase
+    public class ProductPageViewModel : AWViewModelBase, ISupportSharing
     {
         public ICommand NavigateHomeCommand { get; private set; }
+
+        public ICommand ShareProductCommand { get; set; }
 
         public IWindowsDataSource DataSource { get; private set; }
 
@@ -46,13 +51,19 @@ namespace AdventureWorksCatalog.ViewModel
             this.DataSource = datasource;
 
             NavigateHomeCommand = new RelayCommand(OnNavigateHomeCommand);
+            ShareProductCommand = new RelayCommand(OnShareProductCommand);
 
 #if DEBUG
-            if(IsInDesignMode)
+            if (IsInDesignMode)
             {
                 this.LoadAsync(1);
             }
 #endif
+        }
+
+        private void OnShareProductCommand()
+        {
+            DataTransferManager.ShowShareUI();
         }
 
         private void OnNavigateHomeCommand()
@@ -72,7 +83,55 @@ namespace AdventureWorksCatalog.ViewModel
             Product = product;
         }
 
+      
+
+        public override void Initialize(object parameter)
+        {
+            Product product = parameter as Product;
+            if (product == null)
+            {
+                throw new ArgumentNullException("parameter", "parameter cannot be null");
+            }
+            this.LoadAsync(product.Id);
+            base.Initialize(parameter);
+        }
+
+
         #region Share
+        public void OnShareRequested(DataRequest dataRequest)
+        {
+            if (this.Product != null)
+            {
+                dataRequest.Data.Properties.Title = this.ShareTitle;
+                dataRequest.Data.Properties.Description = this.Product.Description;
+                dataRequest.Data.SetText(this.Product.Description);
+
+                var imageStreamRef = RandomAccessStreamReference.CreateFromUri(new Uri(new Uri("ms-appx:///Data/"), this.Product.PhotoPath));
+                if (imageStreamRef != null)
+                {
+                    dataRequest.Data.Properties.Thumbnail = imageStreamRef;
+                    dataRequest.Data.SetBitmap(imageStreamRef);
+                }
+
+                var htmlToShare = this.GetHtmlToShare();
+                dataRequest.Data.SetHtmlFormat(HtmlFormatHelper.CreateHtmlFormat(htmlToShare));
+            }
+            else
+            {
+                throw new Exception("Select the item you want to share and try again.");
+            }
+        }
+
+        public string ShareTitle
+        {
+            get
+            {
+                if (this.Product == null || this.Company == null)
+                    return null;
+                return string.Format("{0} - {1}", this.Company.Name, this.Product.Name);
+            }
+        }
+
         public Uri GetUriToShare()
         {
             if (Product != null && !String.IsNullOrEmpty(Product.ProductUrl))
@@ -128,25 +187,6 @@ namespace AdventureWorksCatalog.ViewModel
             }
             return stringBuilder.ToString();
         }
-
-
-        public string GetTitleToShare()
-        {
-            if (Product == null || Company == null)
-                return null;
-            return string.Format("{0} - {1}", Company.Name, Product.Name);
-        }
         #endregion
-
-        public override void Initialize(object parameter)
-        {
-            Product product = parameter as Product;
-            if (product == null)
-            {
-                throw new ArgumentNullException("parameter", "parameter cannot be null");
-            }
-            this.LoadAsync(product.Id);
-            base.Initialize(parameter);
-        }
     }
 }
