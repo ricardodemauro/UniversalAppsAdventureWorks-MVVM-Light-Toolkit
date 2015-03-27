@@ -13,6 +13,10 @@
     </Page.DataContext>
 
     <Grid>
+    	<Grid.ColumnDefinitions>
+    		<ColumnDefinition Width="7*"/>
+    		<ColumnDefinition Width="9*"/>
+    	</Grid.ColumnDefinitions>
         <Grid.Background>
             <ImageBrush ImageSource="{Binding Company.BackgroundPath, Converter={StaticResource StringToImageConverter}}" Stretch="UniformToFill" />
         </Grid.Background>
@@ -28,7 +32,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Grid Margin="40,60,0,0">
+        <Grid Margin="40,60,0,0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="*"/>
@@ -38,12 +42,12 @@
             <Image Height="100" Source="{Binding Company.LogoPath, Converter={StaticResource StringToImageConverter}}" Stretch="Uniform" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left"/>
         </Grid>
 
-        <TextBlock Grid.Row="1" Margin="120,0,0,0" Style="{StaticResource HeaderTextBlockStyle}" Text="{Binding Category.Name}"/>
+        <TextBlock Grid.Row="1" Style="{StaticResource HeaderTextBlockStyle}" Text="{Binding Category.Name}" Margin="752,0,0,0" Grid.ColumnSpan="2"/>
         <GridView Grid.Row="2"
                             ItemsSource="{Binding Category.Products}"
                             SelectionMode="None"
         		            IsSwipeEnabled="false"
-                            IsItemClickEnabled="True">
+                            IsItemClickEnabled="True" Grid.ColumnSpan="2">
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="Left" Width="400" Height="250">
