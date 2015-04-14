@@ -81,8 +81,6 @@ namespace AdventureWorksCatalog.View
         {
         }
 
-        
-
         #region NavigationHelper registration
 
         /// <summary>

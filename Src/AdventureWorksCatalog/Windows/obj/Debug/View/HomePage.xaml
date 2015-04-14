@@ -79,14 +79,17 @@
 			</TransitionCollection>
 		</Grid.ChildrenTransitions>
         
+        
+        
 		<Hub Padding="40,40,0,0">
 			<Hub.Header>
-				<Grid Margin="0,20,0,0">
+				<Grid Width="720">
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="80"/>
 						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="200"/>
 					</Grid.ColumnDefinitions>
-					<Image HorizontalAlignment="Left" VerticalAlignment="Top" Height="100" Stretch="Uniform" Grid.Column="1" Source="{Binding Company.LogoPath, Converter={StaticResource StringToImageConverter}}"/>
+					<Image HorizontalAlignment="Left" VerticalAlignment="Top" Height="100" Stretch="Uniform" Source="{Binding Company.LogoPath, Converter={StaticResource StringToImageConverter}}"/>
+					<SearchBox HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Height="26" Margin="52,34,10,40" Width="138"/>
 				</Grid>
 			</Hub.Header>
 			<HubSection Width="780" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">

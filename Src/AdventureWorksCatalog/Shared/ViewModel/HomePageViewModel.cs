@@ -91,9 +91,6 @@ namespace AdventureWorksCatalog.ViewModel
         {
             this.Loading = true;
 
-#if DEBUG
-            await Task.Delay(2000);
-#endif
             var categories = await this.DataSource.GetCategoriesAndItemsAsync(4);
 
             Categories = new ObservableCollection<Category>();
